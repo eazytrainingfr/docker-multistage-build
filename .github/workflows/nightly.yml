@@ -1,0 +1,29 @@
+name: Nightly Test
+
+# Run the nightly tests at at 8 AM UTC / 1 AM Pacific
+on:
+  schedule:
+    - cron: "0 8 * * *"
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    env:
+      PROD_IMAGE: ghcr.io/diranetafen/simple-webapp-docker:edge
+      HUB_PULL_SECRET: NA 
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Login to ghcr
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GHCR_TOKEN }}
+      - name: Compose up
+        run: docker-compose -f docker-compose.yml up -d
+      - name: Check running containers
+        run: docker ps -a
+      - name: Check logs
+        run: docker-compose -f docker-compose.yml logs
+      - name: Compose down
+        run: docker-compose -f docker-compose.yml down
