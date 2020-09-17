@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  web:
+    build:
+      context: ./app
+      target: prod
+    volumes:
+      - "${PWD}/app:/opt"
+    ports:
+      - "8080:8080"
