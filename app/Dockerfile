@@ -1,4 +1,4 @@
-FROM ubuntu:16.04 AS base
+FROM ubuntu:18.04 AS base
 WORKDIR /opt
 RUN apt update && apt-get -y install software-properties-common
 RUN add-apt-repository ppa:deadsnakes/ppa && apt-get update
